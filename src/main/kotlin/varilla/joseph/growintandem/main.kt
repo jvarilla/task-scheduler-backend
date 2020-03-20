@@ -8,10 +8,9 @@ import org.koin.core.inject
 import org.koin.core.module.Module
 import varilla.joseph.growintandem.modules.http.HttpRouterModules
 
-
-fun main() {
-      // Inject the vertx context
-      val vertx = Vertx.vertx()
-      vertx.deployVerticle("varilla.joseph.growintandem.MainVerticle")
-}
+  fun main() {
+    // Inject the vertx context
+    val vertx = Vertx.vertx()
+    vertx.deployVerticle("varilla.joseph.growintandem.MainVerticle")
+  }
 

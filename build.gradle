@@ -17,9 +17,9 @@ ext {
   vertxVersion = '3.8.4'
   junitJupiterEngineVersion = '5.4.0'
   // Current stable version
-  
+
   // For dependency injection
-  koin_version= "2.0.1"
+  koin_version= "2.1.4"
 }
 
 application {
@@ -51,7 +51,7 @@ dependencies {
   compile "io.vertx:vertx-lang-kotlin:$vertxVersion"
   compile "io.vertx:vertx-web:$vertxVersion"
   compile "io.vertx:vertx-lang-kotlin-coroutines:$vertxVersion"
-
+  compile "io.vertx:vertx-mongo-client:$vertxVersion"
   // Koin for Kotlin
   compile "org.koin:koin-core:$koin_version"
 
