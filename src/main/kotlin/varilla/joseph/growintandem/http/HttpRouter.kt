@@ -27,5 +27,8 @@ interface HttpRouter :KoinComponent {
    */
   suspend fun getPlantWateringSchedule(event :RoutingContext) : Unit
 
-
+  /**
+   * Create a plant provided watering days and plant name
+   */
+  suspend fun createPlantHandler(event :RoutingContext) :Unit
 }

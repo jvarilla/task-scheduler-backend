@@ -34,4 +34,13 @@ interface PlantDomainService :KoinComponent {
    */
   suspend fun getPlantWateringSchedule(id :String, startDate : Instant,
                                        numWeeks :Int, allowWeekends :Boolean) : PlantWateringSchedule
+
+  /**
+   * Create a new plant
+   *
+   * @param newPlant  New plant to be created
+   *
+   * @return  The a created plant that is confirmed to be correct and added
+   */
+  suspend fun createPlant(newPlant :Plant) :Plant
 }

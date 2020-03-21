@@ -13,5 +13,5 @@ val MONGO_CONFIG = jsonObjectOf(
 )
 
 val MongoModules = module {
-  single { MongoClient.createNonShared(get(), MONGO_CONFIG)  as MongoClient }
+  single { MongoClient.createShared(get(), MONGO_CONFIG)  as MongoClient }
 }

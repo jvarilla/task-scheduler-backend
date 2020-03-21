@@ -147,4 +147,18 @@ class PlantDomainServiceImpl :PlantDomainService, KoinComponent {
     return newStartDate
   }
 
+  override suspend fun createPlant(newPlant: Plant): Plant {
+    try {
+      if (newPlant.waterEveryNumDays < 0 ) {
+        throw Exception() // TODO: Replace with invalid water num days
+      }
+
+      // Call to the create plant repo
+      return plantObjectRepo.createPlant(newPlant)
+    } catch (throwable :Throwable) {
+        when(throwable) {
+          else -> throw throwable
+        }
+    }
+  }
 }

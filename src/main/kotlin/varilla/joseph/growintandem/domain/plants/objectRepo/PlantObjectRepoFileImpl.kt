@@ -3,6 +3,7 @@ package varilla.joseph.growintandem.domain.plants.objectRepo
 import io.vertx.core.json.Json
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
+import io.vertx.kotlin.core.json.jsonArrayOf
 import org.koin.core.KoinComponent
 import varilla.joseph.growintandem.utils.domain.PlantNotFoundException
 import varilla.joseph.growintandem.utils.models.Plant
@@ -105,4 +106,11 @@ class PlantObjectRepoFileImpl :PlantObjectRepo , KoinComponent {
       }
 
   }
+
+  override suspend fun createPlant(newPlant: Plant): Plant {
+    jsonArrOfSampleData.add(newPlant.toJsonObject())
+    return newPlant
+  }
 }
+
+

@@ -163,7 +163,7 @@ class ApplicationServiceImpl :ApplicationService, KoinComponent {
 
           // Then reset the list of plants to water on the current day
           plantWateringScheduleDayPlantsList = mutableListOf<PlantWateringDate>()
-          
+
 
 
 
@@ -183,6 +183,18 @@ class ApplicationServiceImpl :ApplicationService, KoinComponent {
     ).toJsonObject()
   }
 
+  override suspend fun createPlant(plantName: String, waterNumDays: Int): JsonObject {
+    try {
+      val id = UUID.randomUUID().toString()
+
+      // Create the plant and pass it to the Plant Domain Service
+      return plantDomainService.createPlant(
+        Plant(id = id, name = plantName, waterEveryNumDays = waterNumDays)).toJsonObject()
+
+    } catch (throwable :Throwable) {
+      throw  throwable
+    }
+  }
 
 
 }

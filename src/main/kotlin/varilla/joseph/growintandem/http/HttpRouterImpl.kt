@@ -64,6 +64,7 @@ class HttpRouterImpl(private val vertx : Vertx,
     // Example:
     // host:port/api/v1/plants/123/watering-schedule?weeks=12&start-date=2003-11-20T11:11:11Z&allow-weekends=false
     router.get("$apiBase1/plants/:id/watering-schedule").coroutineHandler(this::getPlantWateringSchedule)
+    router.post("$apiBase1/plants").coroutineHandler(this::createPlantHandler)
     return router
   }
 
@@ -205,6 +206,29 @@ class HttpRouterImpl(private val vertx : Vertx,
     }
   }
 
+  override suspend fun createPlantHandler(event: RoutingContext) {
+    try {
+      // Get the response body
+      val requestPayload  = event.body.toJsonObject()
+
+      // Parse Params
+      val plantName :String = requestPayload.getString("plantName") ?: throw Exception()
+      val waterNumDays :Int = requestPayload.getInteger("waterNumDays") ?: throw Exception()
+
+
+      val response = applicationService.createPlant(plantName = plantName, waterNumDays =  waterNumDays)
+
+      // Send back response
+      event.response().sendAsJSONWithStatusCode(response.toString(), 201)
+    } catch(throwable :Throwable) {
+      println(throwable)
+      when(throwable) {
+        else -> { // If unknown send 500 error
+          event.response().sendAsJSONWithStatusCode(
+            Json.encodePrettily(SERVER_ERROR_MESSAGE_OBJECT),
+            SERVER_ERROR_MESSAGE_OBJECT.statusCode) }
+      }    }
+  }
   // This is needed to make coroutines work. Don't worry about how it works for now.
   private fun Route.coroutineHandler(fn: suspend (RoutingContext) -> Unit) {
       handler { ctx ->

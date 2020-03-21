@@ -8,6 +8,7 @@ import io.vertx.ext.mongo.MongoClient
 import io.vertx.kotlin.core.json.jsonObjectOf
 import io.vertx.kotlin.ext.mongo.findAwait
 import io.vertx.kotlin.ext.mongo.findOneAwait
+import io.vertx.kotlin.ext.mongo.insertAwait
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.dsl.module
@@ -16,41 +17,38 @@ import varilla.joseph.growintandem.utils.models.Plant
 import varilla.joseph.growintandem.utils.models.toPlant
 
 class PlantObjectRepoMongoImpl :PlantObjectRepo, KoinComponent {
-  private val mongoClient :MongoClient by inject()
+  private val mongoClient: MongoClient by inject()
 
   /**
    * Get plants list
    * @return  List of plants
    */
-  override suspend fun getPlantsList() :List<Plant> {
+  override suspend fun getPlantsList(): List<Plant> {
     try {
-      val response =  mongoClient.findOneAwait("plants", jsonObjectOf(), jsonObjectOf()) ?: throw PlantNotFoundException()
+      val response =
+        mongoClient.findOneAwait("plants", jsonObjectOf(), jsonObjectOf()) ?: throw PlantNotFoundException()
       return listOf<Plant>(response.toPlant())
-    } catch (throwable :Throwable) {
-        throw throwable
+    } catch (throwable: Throwable) {
+      throw throwable
     }
-
-       //listOf<Plant>(Plant("1", "1", 1))
-//    return mongoClient.findAwait("plants", jsonObjectOf()).map{
-//      it.toPlant()
-//    }
   }
+
 
   /**
    * Get plant by id
    * @return  A plant
    */
-  override suspend fun getPlantById(id :String) : Plant {
+  override suspend fun getPlantById(id: String): Plant {
     try {
-      println("Before query")
-      val response =  mongoClient.findOneAwait("plants", jsonObjectOf("name" to "Fiddle Leaf Fig"), jsonObjectOf()) ?: throw PlantNotFoundException()
-      println("after query")
-      response.put("id", response.getValue("id"))
+      val response = mongoClient.findOneAwait("plants", jsonObjectOf("_id" to id), jsonObjectOf())
+        ?: throw PlantNotFoundException()
 
-      response.remove("_id")
-      println("RESPONSE $response")
-      return Plant(id = "1", name = response.getString("name") ,waterEveryNumDays = response.getInteger("water_after")) // response.toPlant()
-    } catch (throwable :Throwable) {
+      return Plant(
+        id = response.getString("_id"),
+        name = response.getString("name"),
+        waterEveryNumDays = response.getInteger("water_after")
+      ) 
+    } catch (throwable: Throwable) {
       println("shit happened")
       println(throwable.stackTrace)
       println(throwable.localizedMessage)
@@ -58,4 +56,22 @@ class PlantObjectRepoMongoImpl :PlantObjectRepo, KoinComponent {
     }
   }
 
+  override suspend fun createPlant(newPlant: Plant): Plant {
+    try {
+      // Do id rotation
+      var plantDocument = newPlant.toJsonObject()
+      plantDocument.put("_id", newPlant.id)
+      plantDocument.remove("id")
+
+      mongoClient.insertAwait(collection = "plants", document = plantDocument)
+      // Return the plant if successful
+      return newPlant
+    } catch (throwable: Throwable) {
+      when (throwable) {
+        else -> throw throwable
+      }
+    }
+  }
+
 }
+

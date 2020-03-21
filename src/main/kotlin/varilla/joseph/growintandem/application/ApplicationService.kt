@@ -47,4 +47,13 @@ interface ApplicationService :KoinComponent{
    */
   suspend fun getAllPlantWateringSchedules(startDate : Instant,
                                            numWeeks :Int, allowWeekends :Boolean) :JsonObject
+
+
+  /**
+   * Creates a new plant
+   *
+   * @param plantName Name of plant to be created
+   * @param waterNumDays  Number of days a plant can go without watering
+   */
+  suspend fun createPlant(plantName :String, waterNumDays :Int) : JsonObject
 }

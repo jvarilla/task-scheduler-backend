@@ -17,4 +17,6 @@ interface PlantObjectRepo :KoinComponent {
    */
   suspend fun getPlantById(id :String) :Plant
 
+
+  suspend fun createPlant(newPlant :Plant) :Plant
 }
