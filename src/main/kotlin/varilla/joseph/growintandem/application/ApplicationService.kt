@@ -3,6 +3,7 @@ package varilla.joseph.growintandem.application
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import org.koin.core.KoinComponent
+import varilla.joseph.growintandem.utils.models.Plant
 import java.time.Instant
 
 interface ApplicationService :KoinComponent{
@@ -56,4 +57,13 @@ interface ApplicationService :KoinComponent{
    * @param waterNumDays  Number of days a plant can go without watering
    */
   suspend fun createPlant(plantName :String, waterNumDays :Int) : JsonObject
+
+
+  /**
+   * Remove a plant
+   * @param id  The id of the plant to remove
+   *
+   * @return  The Plant that was removed
+   */
+  suspend fun removePlant(id :String) : JsonObject
 }

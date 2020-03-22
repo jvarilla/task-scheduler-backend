@@ -3,6 +3,7 @@ package varilla.joseph.growintandem.domain.plants.objectRepo
 import io.vertx.ext.mongo.MongoClient
 import io.vertx.kotlin.core.json.jsonObjectOf
 import io.vertx.kotlin.ext.mongo.findAwait
+import io.vertx.kotlin.ext.mongo.findOneAndDeleteAwait
 import io.vertx.kotlin.ext.mongo.findOneAwait
 import io.vertx.kotlin.ext.mongo.insertAwait
 import org.koin.core.KoinComponent
@@ -70,7 +71,9 @@ class PlantObjectRepoMongoImpl :PlantObjectRepo, KoinComponent {
 
   override suspend fun removePlant(id: String): Plant {
     try {
-      TODO("Not yet implemented")
+        // Delete plant and return it or throw a Plant Not Found Exceptions
+        return (mongoClient.findOneAndDeleteAwait("plants", jsonObjectOf("_id" to id))
+            ?: throw PlantNotFoundException()).toPlant()
     } catch (throwable :Throwable) {
       when (throwable) {
         else -> throw throwable

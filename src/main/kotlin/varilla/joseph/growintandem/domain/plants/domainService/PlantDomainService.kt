@@ -43,4 +43,12 @@ interface PlantDomainService :KoinComponent {
    * @return  The a created plant that is confirmed to be correct and added
    */
   suspend fun createPlant(newPlant :Plant) :Plant
+
+  /**
+   * Remove a plant
+   * @param id  The id of the plant to remove
+   *
+   * @return  The Plant that was removed
+   */
+  suspend fun removePlant(id :String) :Plant
 }

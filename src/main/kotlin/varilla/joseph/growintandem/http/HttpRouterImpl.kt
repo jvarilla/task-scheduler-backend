@@ -36,6 +36,7 @@ class HttpRouterImpl(private val vertx : Vertx,
       CorsHandler.create("*")
       .allowedMethod(io.vertx.core.http.HttpMethod.GET)
       .allowedMethod(io.vertx.core.http.HttpMethod.POST)
+      .allowedMethod(io.vertx.core.http.HttpMethod.DELETE)
       .allowedMethod(io.vertx.core.http.HttpMethod.OPTIONS)
       .allowedHeader("Access-Control-Request-Method")
       .allowedHeader("Access-Control-Allow-Credentials")
@@ -65,6 +66,8 @@ class HttpRouterImpl(private val vertx : Vertx,
     // host:port/api/v1/plants/123/watering-schedule?weeks=12&start-date=2003-11-20T11:11:11Z&allow-weekends=false
     router.get("$apiBase1/plants/:id/watering-schedule").coroutineHandler(this::getPlantWateringSchedule)
     router.post("$apiBase1/plants").coroutineHandler(this::createPlantHandler)
+
+    router.delete("$apiBase1/plants/:id").coroutineHandler(this::removePlantHandler)
     return router
   }
 
@@ -227,7 +230,31 @@ class HttpRouterImpl(private val vertx : Vertx,
           event.response().sendAsJSONWithStatusCode(
             Json.encodePrettily(SERVER_ERROR_MESSAGE_OBJECT),
             SERVER_ERROR_MESSAGE_OBJECT.statusCode) }
-      }    }
+      }
+    }
+
+  }
+
+  override suspend fun removePlantHandler(event: RoutingContext) {
+    try {
+      // Get the id
+      val targetId = event.request().getParam("id") ?: throw Exception()
+
+      // Make the call to app service to remove the plant
+      val deletedPlantObj = applicationService.removePlant(id = targetId)
+
+      // Send back response
+      event.response().sendAsJSONWithStatusCode(deletedPlantObj.toString(), 202)
+
+    } catch (throwable :Throwable) {
+      println(throwable)
+      when(throwable) {
+        else -> { // If unknown send 500 error
+          event.response().sendAsJSONWithStatusCode(
+            Json.encodePrettily(SERVER_ERROR_MESSAGE_OBJECT),
+            SERVER_ERROR_MESSAGE_OBJECT.statusCode) }
+      }
+    }
   }
   // This is needed to make coroutines work. Don't worry about how it works for now.
   private fun Route.coroutineHandler(fn: suspend (RoutingContext) -> Unit) {

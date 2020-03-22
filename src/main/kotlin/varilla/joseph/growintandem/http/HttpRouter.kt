@@ -31,4 +31,9 @@ interface HttpRouter :KoinComponent {
    * Create a plant provided watering days and plant name
    */
   suspend fun createPlantHandler(event :RoutingContext) :Unit
+
+  /**
+   * Delete a plant and return it as a JSON object provided its ID
+   */
+  suspend fun removePlantHandler(event :RoutingContext) :Unit
 }
