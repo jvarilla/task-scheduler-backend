@@ -1,9 +1,5 @@
 package varilla.joseph.growintandem.domain.plants.objectRepo
 
-import io.vertx.core.Vertx
-import io.vertx.core.json.Json
-import io.vertx.core.json.JsonArray
-import io.vertx.core.json.JsonObject
 import io.vertx.ext.mongo.MongoClient
 import io.vertx.kotlin.core.json.jsonObjectOf
 import io.vertx.kotlin.ext.mongo.findAwait
@@ -11,7 +7,6 @@ import io.vertx.kotlin.ext.mongo.findOneAwait
 import io.vertx.kotlin.ext.mongo.insertAwait
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import org.koin.dsl.module
 import varilla.joseph.growintandem.utils.domain.PlantNotFoundException
 import varilla.joseph.growintandem.utils.models.Plant
 import varilla.joseph.growintandem.utils.models.toPlant
@@ -25,9 +20,9 @@ class PlantObjectRepoMongoImpl :PlantObjectRepo, KoinComponent {
    */
   override suspend fun getPlantsList(): List<Plant> {
     try {
-      val response =
-        mongoClient.findOneAwait("plants", jsonObjectOf(), jsonObjectOf()) ?: throw PlantNotFoundException()
-      return listOf<Plant>(response.toPlant())
+      return mongoClient.findAwait("plants", jsonObjectOf()).map {
+        it.toPlant()
+      }
     } catch (throwable: Throwable) {
       throw throwable
     }
@@ -47,7 +42,7 @@ class PlantObjectRepoMongoImpl :PlantObjectRepo, KoinComponent {
         id = response.getString("_id"),
         name = response.getString("name"),
         waterEveryNumDays = response.getInteger("water_after")
-      ) 
+      )
     } catch (throwable: Throwable) {
       println("shit happened")
       println(throwable.stackTrace)
@@ -67,6 +62,16 @@ class PlantObjectRepoMongoImpl :PlantObjectRepo, KoinComponent {
       // Return the plant if successful
       return newPlant
     } catch (throwable: Throwable) {
+      when (throwable) {
+        else -> throw throwable
+      }
+    }
+  }
+
+  override suspend fun removePlant(id: String): Plant {
+    try {
+      TODO("Not yet implemented")
+    } catch (throwable :Throwable) {
       when (throwable) {
         else -> throw throwable
       }

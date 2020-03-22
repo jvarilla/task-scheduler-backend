@@ -18,7 +18,7 @@ data class Plant (var id:String, var name:String, var waterEveryNumDays :Int ) {
 fun JsonObject.toPlant() :Plant {
   try {
     return Plant(
-      id = this.getString("id"),
+      id = this.getString("id") ?: this.getString("_id"),
       name = this.getString("name"),
       waterEveryNumDays = this.getInteger("water_after")
     )

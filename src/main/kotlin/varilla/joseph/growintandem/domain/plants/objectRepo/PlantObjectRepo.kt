@@ -17,6 +17,19 @@ interface PlantObjectRepo :KoinComponent {
    */
   suspend fun getPlantById(id :String) :Plant
 
-
+  /**
+   * Create a plant
+   * @param newPlant  The plant to add to the data source
+   *
+   * @return  The Plant if added successfully
+   */
   suspend fun createPlant(newPlant :Plant) :Plant
+
+  /**
+   * Remove a plant
+   * @param id  The id of the plant to remove
+   *
+   * @return  The Plant that was removed
+   */
+  suspend fun removePlant(id :String) :Plant
 }

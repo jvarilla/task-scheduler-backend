@@ -54,6 +54,7 @@ class PlantDomainServiceImpl :PlantDomainService, KoinComponent {
             wateringDayFrequency = thePlant.waterEveryNumDays.toLong()
         ))
     } catch (throwable: Throwable) {
+      throwable.printStackTrace()
       throw throwable
     }
   }
