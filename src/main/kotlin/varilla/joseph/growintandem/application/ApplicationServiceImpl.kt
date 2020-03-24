@@ -196,10 +196,10 @@ class ApplicationServiceImpl :ApplicationService, KoinComponent {
     }
   }
 
-  override suspend fun removePlant(id: String): JsonObject {
+  override suspend fun removePlantById(id: String): JsonObject {
     try {
       // Remove the plant and convert to JsonObject
-      return plantDomainService.removePlant(id = id).toJsonObject()
+      return plantDomainService.removePlantById(id = id).toJsonObject()
     } catch (throwable :Throwable) {
       when(throwable) {
         else -> throw throwable

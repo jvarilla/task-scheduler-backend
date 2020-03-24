@@ -31,5 +31,5 @@ interface PlantObjectRepo :KoinComponent {
    *
    * @return  The Plant that was removed
    */
-  suspend fun removePlant(id :String) :Plant
+  suspend fun removePlantById(id :String) :Plant
 }

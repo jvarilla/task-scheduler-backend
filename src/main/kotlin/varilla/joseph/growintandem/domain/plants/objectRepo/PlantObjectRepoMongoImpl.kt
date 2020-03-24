@@ -69,7 +69,7 @@ class PlantObjectRepoMongoImpl :PlantObjectRepo, KoinComponent {
     }
   }
 
-  override suspend fun removePlant(id: String): Plant {
+  override suspend fun removePlantById(id: String): Plant {
     try {
         // Delete plant and return it or throw a Plant Not Found Exceptions
         return (mongoClient.findOneAndDeleteAwait("plants", jsonObjectOf("_id" to id))

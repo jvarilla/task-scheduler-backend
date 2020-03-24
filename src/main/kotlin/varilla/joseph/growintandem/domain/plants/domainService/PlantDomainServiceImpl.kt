@@ -163,10 +163,10 @@ class PlantDomainServiceImpl :PlantDomainService, KoinComponent {
     }
   }
 
-  override suspend fun removePlant(id: String): Plant {
+  override suspend fun removePlantById(id: String): Plant {
     try {
       // Delete the plant
-      return plantObjectRepo.removePlant(id);
+      return plantObjectRepo.removePlantById(id);
     } catch (throwable :Throwable) {
       when (throwable) {
         else -> throw throwable

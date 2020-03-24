@@ -2,7 +2,6 @@ package varilla.joseph.growintandem.http
 
 import io.vertx.core.Vertx
 import io.vertx.core.json.Json
-import io.vertx.core.json.JsonObject
 import io.vertx.ext.web.Route
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
@@ -11,14 +10,11 @@ import io.vertx.ext.web.handler.BodyHandler
 import io.vertx.ext.web.handler.CorsHandler
 import io.vertx.kotlin.core.json.jsonObjectOf
 import io.vertx.kotlin.coroutines.dispatcher
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.runBlocking
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import varilla.joseph.growintandem.application.ApplicationService
 import varilla.joseph.growintandem.utils.http.*
-import varilla.joseph.growintandem.utils.models.Plant
 import java.lang.Exception
 import java.time.Instant
 import kotlin.coroutines.CoroutineContext
@@ -241,7 +237,7 @@ class HttpRouterImpl(private val vertx : Vertx,
       val targetId = event.request().getParam("id") ?: throw Exception()
 
       // Make the call to app service to remove the plant
-      val deletedPlantObj = applicationService.removePlant(id = targetId)
+      val deletedPlantObj = applicationService.removePlantById(id = targetId)
 
       // Send back response
       event.response().sendAsJSONWithStatusCode(deletedPlantObj.toString(), 202)

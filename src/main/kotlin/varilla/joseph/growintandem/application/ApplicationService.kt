@@ -65,5 +65,5 @@ interface ApplicationService :KoinComponent{
    *
    * @return  The Plant that was removed
    */
-  suspend fun removePlant(id :String) : JsonObject
+  suspend fun removePlantById(id :String) : JsonObject
 }

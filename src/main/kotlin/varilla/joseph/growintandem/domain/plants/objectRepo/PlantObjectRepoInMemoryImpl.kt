@@ -50,7 +50,7 @@ class PlantObjectRepoInMemoryImpl :PlantObjectRepo , KoinComponent {
 
   }
 
-  override suspend fun removePlant(id: String): Plant {
+  override suspend fun removePlantById(id: String): Plant {
     try {
       // Get the plant to remove
       var plantToReturn :Plant = plantDataStore.get(id) ?: throw PlantNotFoundException()
